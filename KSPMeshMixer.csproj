@@ -1,0 +1,84 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- V-SwiFT's ITransformer has default interface members, so a custom transformer (the colour
+         switcher) needs a netstandard 2.1 target to implement it. -->
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <RootNamespace>KSPMeshMixer</RootNamespace>
+    <AssemblyName>KSPMeshMixer</AssemblyName>
+    <Version>0.1.0</Version>
+    <Description>B9PartSwitch-compatible subtype switching for KSP1 parts imported by KSP 2 Redux: alternate meshes, textures, tank contents and mass from the part's existing ModuleB9PartSwitch config.</Description>
+    <OutputPath>dist\mods\KSPMeshMixer\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <DebugType>portable</DebugType>
+    <NoWarn>$(NoWarn);CS0649;MSB3277;CS1591</NoWarn>
+
+    <!-- Override with: dotnet build -p:Ksp2Dir="D:\Steam\steamapps\common\Kerbal Space Program 2" -->
+    <Ksp2Dir Condition="'$(Ksp2Dir)' == '' AND '$(KSP2DIR)' != ''">$(KSP2DIR)</Ksp2Dir>
+    <Ksp2Dir Condition="'$(Ksp2Dir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program 2</Ksp2Dir>
+    <Ksp2ManagedDir>$(Ksp2Dir)\KSP2_x64_Data\Managed</Ksp2ManagedDir>
+
+    <LangVersion>9.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Deterministic>true</Deterministic>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <!-- A Unity mod has no use for a deps file; it only confuses loaders. -->
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="tests\**" />
+    <None Remove="tests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Game/SpaceWarp assemblies come from the install; never ship them with the mod. -->
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(Ksp2ManagedDir)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="SpaceWarp2">
+      <HintPath>$(Ksp2ManagedDir)\SpaceWarp2.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(Ksp2ManagedDir)\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="ReduxLib">
+      <HintPath>$(Ksp2ManagedDir)\ReduxLib.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(Ksp2ManagedDir)\Newtonsoft.Json.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(Ksp2ManagedDir)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(Ksp2ManagedDir)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="swinfo.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="KSPMeshMixer-config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <Target Name="VerifyKsp2Install" BeforeTargets="ResolveAssemblyReferences">
+    <Error Condition="!Exists('$(Ksp2ManagedDir)\Assembly-CSharp.dll')"
+           Text="KSP 2 assemblies were not found in '$(Ksp2ManagedDir)'. Point the build at your install with: dotnet build -p:Ksp2Dir=&quot;D:\path\to\Kerbal Space Program 2&quot;" />
+    <Error Condition="!Exists('$(Ksp2ManagedDir)\SpaceWarp2.dll')"
+           Text="SpaceWarp2.dll is missing from '$(Ksp2ManagedDir)'. KSP 2 Redux ships it; check that the install is complete." />
+  </Target>
+
+</Project>

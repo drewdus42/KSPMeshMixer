@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AssemblyName>KSPMeshMixer.Tests</AssemblyName>
+    <RootNamespace>KSPMeshMixer.Tests</RootNamespace>
+
+    <Ksp2Dir Condition="'$(Ksp2Dir)' == '' AND '$(KSP2DIR)' != ''">$(KSP2DIR)</Ksp2Dir>
+    <Ksp2Dir Condition="'$(Ksp2Dir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program 2</Ksp2Dir>
+    <Ksp2ManagedDir>$(Ksp2Dir)\KSP2_x64_Data\Managed</Ksp2ManagedDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The B9 reading layer has no game types, so it is compiled straight into the test. -->
+    <Compile Include="..\..\src\B9Node.cs" Link="B9Node.cs" />
+    <Compile Include="..\..\src\B9Config.cs" Link="B9Config.cs" />
+    <Compile Include="..\..\src\PartVariantsConfig.cs" Link="PartVariantsConfig.cs" />
+    <Compile Include="..\..\src\Ksp1NodeAdapter.cs" Link="Ksp1NodeAdapter.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Only for Ksp1ConfigNode.Parse: the tests read the real mod configs. -->
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(Ksp2ManagedDir)\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(Ksp2ManagedDir)\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

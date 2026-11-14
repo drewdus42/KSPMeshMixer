@@ -1,0 +1,14 @@
+{
+  "spec": "2.0",
+  "mod_id": "KSPMeshMixer",
+  "name": "KSP Mesh Mixer",
+  "author": "Drewdus",
+  "description": "B9PartSwitch for KSP 2: keeps existing KSP 1 ModuleB9PartSwitch part configs working after import, so alternate meshes, textures, tank contents and mass switch the way they did in KSP 1.",
+  "version": "0.1.0",
+  "dependencies": [],
+  "ksp2_version": {
+    "min": "0.2.0.0",
+    "max": "0.2.99.0"
+  },
+  "main_assembly": "KSPMeshMixer.dll"
+}

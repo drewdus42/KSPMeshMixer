@@ -1,0 +1,6 @@
+// Build output, packaged zips and per-machine caches.
+dist/
+bin/
+obj/
+*.user
+*.zip
